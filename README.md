@@ -50,3 +50,40 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template
 [docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+
+
+
+## 開発
+
+### 前提条件
+
+- JDK 17以上が必要
+- JDK 11しかない環境では `JAVA_HOME` を明示的に指定する
+
+```bash
+# 例: Homebrew で openjdk@17 をインストール済みの場合
+export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+```
+
+### ビルド
+
+```bash
+./gradlew buildPlugin
+```
+
+成果物は `build/distributions/` に生成される。
+
+### テスト
+
+```bash
+./gradlew test
+```
+
+### IDE起動（動作確認）
+
+```bash
+export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+./gradlew runIde
+```
+
+サンドボックス環境のIntelliJ IDEAが起動し、プラグインがインストールされた状態で確認できる。
