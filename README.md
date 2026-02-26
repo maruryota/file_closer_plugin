@@ -1,35 +1,28 @@
-# file_closer_plugin
+# File Closer
 
 ![Build](https://github.com/maruryota/file_closer_plugin/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-- [ ] Configure the [CODECOV_TOKEN](https://docs.codecov.com/docs/quick-start) secret for automated test coverage reports on PRs
-
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+**File Closer** is a JetBrains IDE plugin that lets you bulk-close open editor tabs grouped by file extension.
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
+When dozens of tabs pile up, closing them one by one is tedious. File Closer gives you a tree view that groups every open file by its extension, so you can close an entire group with a single click.
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
+### Features
+
+- **Extension-grouped tree view** &mdash; Open files are listed under their extension (e.g. `.kt`, `.xml`, `.md`) with file counts.
+- **Bulk close** &mdash; Click the trash icon on an extension group to close all files of that type at once.
+- **Single close** &mdash; Expand a group and click the trash icon on an individual file to close just that one.
+- **Unsaved-file safety** &mdash; If a file has unsaved changes, a save/discard/cancel dialog appears before closing.
+- **Live updates** &mdash; The tree refreshes automatically when you open or close files.
 <!-- Plugin description end -->
 
 ## Installation
 
 - Using the IDE built-in plugin system:
 
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "file_closer_plugin"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "File Closer"</kbd> >
   <kbd>Install</kbd>
 
 - Using JetBrains Marketplace:
@@ -44,46 +37,47 @@ To keep everything working, do not remove `<!-- ... -->` sections.
   Download the [latest release](https://github.com/maruryota/file_closer_plugin/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
+## Usage
 
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
+1. Open the **File Closer** tool window from the right sidebar.
+2. Open files are grouped by extension. Click a group to expand/collapse it.
+3. Click the trash icon on an **extension group** to close all files of that type.
+4. Click the trash icon on a **single file** to close just that file.
 
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
-[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+## Development
 
+### Prerequisites
 
-
-## 開発
-
-### 前提条件
-
-- JDK 17以上が必要
-- JDK 11しかない環境では `JAVA_HOME` を明示的に指定する
+- JDK 17+
 
 ```bash
-# 例: Homebrew で openjdk@17 をインストール済みの場合
+# If only JDK 11 is on PATH, set JAVA_HOME explicitly
 export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
 ```
 
-### ビルド
+### Build
 
 ```bash
 ./gradlew buildPlugin
 ```
 
-成果物は `build/distributions/` に生成される。
+Artifacts are generated in `build/distributions/`.
 
-### テスト
+### Test
 
 ```bash
 ./gradlew test
 ```
 
-### IDE起動（動作確認）
+### Run IDE (sandbox)
 
 ```bash
-export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
 ./gradlew runIde
 ```
 
-サンドボックス環境のIntelliJ IDEAが起動し、プラグインがインストールされた状態で確認できる。
+A sandboxed IntelliJ IDEA instance launches with the plugin pre-installed.
+
+---
+Plugin based on the [IntelliJ Platform Plugin Template][template].
+
+[template]: https://github.com/JetBrains/intellij-platform-plugin-template
