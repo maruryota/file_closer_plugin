@@ -1,5 +1,6 @@
 package com.github.maruryota.filecloserplugin.ui
 
+import com.github.maruryota.filecloserplugin.model.FileCloserTreeNode
 import com.github.maruryota.filecloserplugin.model.FileCloserTreeNode.ExtensionEntry
 import com.github.maruryota.filecloserplugin.model.FileCloserTreeNode.FileEntry
 import com.github.maruryota.filecloserplugin.services.FileCloserService
@@ -12,6 +13,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.treeStructure.Tree
 import java.awt.BorderLayout
+import java.awt.Point
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.JPanel
@@ -20,10 +22,11 @@ class FileCloserPanel(private val project: Project) : JPanel(BorderLayout()), Di
 
     private val service = project.service<FileCloserService>()
     private val treeModel = FileCloserTreeModel(service.buildTreeRoot())
+    private val renderer = FileCloserTreeCellRenderer()
     private val tree = Tree(treeModel).apply {
         isRootVisible = false
         showsRootHandles = true
-        cellRenderer = FileCloserTreeCellRenderer()
+        cellRenderer = renderer
     }
 
     init {
@@ -38,23 +41,22 @@ class FileCloserPanel(private val project: Project) : JPanel(BorderLayout()), Di
                 val row = tree.getClosestRowForLocation(e.x, e.y)
                 if (row < 0) return
 
-                val rowBounds = tree.getRowBounds(row) ?: return
-                if (e.y < rowBounds.y || e.y >= rowBounds.y + rowBounds.height) return
+                val zone = renderer.hitTest(tree, row, Point(e.x, e.y)) ?: return
 
-                if (!FileCloserTreeCellRenderer.isDeleteIconHit(tree, row, e.x)) return
-
-                val path = tree.getPathForRow(row)
-                val node = path?.lastPathComponent ?: return
-
-                when (node) {
-                    is FileEntry -> {
-                        service.closeFile(node.file)
+                when (zone) {
+                    is FileCloserTreeNode.GCButton -> {
+                        e.consume()
+                        val node = tree.getPathForRow(row)?.lastPathComponent ?: return
+                        when (node) {
+                            is FileEntry -> service.closeFile(node.file)
+                            is ExtensionEntry -> service.closeFiles(node.files.map { it.file })
+                        }
                     }
-                    is ExtensionEntry -> {
-                        service.closeFiles(node.files.map { it.file })
+                    is FileCloserTreeNode.NameArea -> {
+                        // Delegate to JTree default behavior (expand/collapse for ExtensionEntry, no-op for FileEntry)
                     }
+                    else -> {}
                 }
-                // Tree will refresh via MessageBus listener
             }
         })
     }
