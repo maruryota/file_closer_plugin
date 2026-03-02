@@ -17,7 +17,7 @@ import javax.swing.tree.TreeCellRenderer
 class FileCloserTreeCellRenderer : TreeCellRenderer {
 
     companion object {
-        /** Extra pixels added to the left of the GC button for easier clicking. */
+        /** Extra pixels added to the right of the GC button for easier clicking. */
         private const val GC_HIT_PADDING = 20
     }
 
@@ -26,8 +26,8 @@ class FileCloserTreeCellRenderer : TreeCellRenderer {
     private val gcButton = JBLabel(AllIcons.Actions.GC)
 
     init {
-        panel.add(textLabel, BorderLayout.WEST)
-        panel.add(gcButton, BorderLayout.EAST)
+        panel.add(gcButton, BorderLayout.WEST)
+        panel.add(textLabel, BorderLayout.CENTER)
     }
 
     override fun getTreeCellRendererComponent(
@@ -82,9 +82,9 @@ class FileCloserTreeCellRenderer : TreeCellRenderer {
         val localX = point.x - rowBounds.x
         val localY = point.y - rowBounds.y
 
-        // Expand the GC button hit area with extra padding on the left
+        // Expand the GC button hit area with extra padding on the right
         val gc = gcButton.bounds
-        val hitArea = Rectangle(gc.x - GC_HIT_PADDING, gc.y, gc.width + GC_HIT_PADDING, gc.height)
+        val hitArea = Rectangle(gc.x, gc.y, gc.width + GC_HIT_PADDING, gc.height)
         if (hitArea.contains(localX, localY)) {
             return FileCloserTreeNode.GCButton
         }

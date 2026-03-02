@@ -5,7 +5,9 @@
 ## [Unreleased]
 
 ## [0.0.1]
+
 ### Added
+
 - Extension-grouped tree view in the right sidebar tool window
 - Bulk close: click the trash icon on an extension group to close all files of that type
 - Single close: expand a group and click the trash icon on an individual file
@@ -14,5 +16,9 @@
 - Duplicate file name detection: files with the same name show their full path
 
 ### Fixed
+
 - Click on the text area of an extension entry no longer closes files (only the trash icon triggers close)
 - Hit-test now uses actual component layout instead of pixel-coordinate calculation
+
+[Unreleased]: https://github.com/maruryota/file_closer_plugin/compare/0.0.1...HEAD
+[0.0.1]: https://github.com/maruryota/file_closer_plugin/commits/0.0.1

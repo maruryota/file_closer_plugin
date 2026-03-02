@@ -116,8 +116,8 @@ class FileCloserServiceTest : BasePlatformTestCase() {
         val bounds = tree.getRowBounds(0)!!
         val midY = bounds.y + bounds.height / 2
 
-        // Click on the left side of the row → NameArea
-        val result = renderer.hitTest(tree, 0, Point(bounds.x + 5, midY))
+        // Click on the right side of the row → NameArea
+        val result = renderer.hitTest(tree, 0, Point(tree.width - 2, midY))
         assertEquals(FileCloserTreeNode.NameArea, result)
     }
 
@@ -129,8 +129,8 @@ class FileCloserServiceTest : BasePlatformTestCase() {
         val bounds = tree.getRowBounds(0)!!
         val midY = bounds.y + bounds.height / 2
 
-        // GC button is at the right edge of the TREE (not rowBounds)
-        val result = renderer.hitTest(tree, 0, Point(tree.width - 2, midY))
+        // GC button is at the left edge of the row
+        val result = renderer.hitTest(tree, 0, Point(bounds.x + 5, midY))
         assertEquals(FileCloserTreeNode.GCButton, result)
     }
 
